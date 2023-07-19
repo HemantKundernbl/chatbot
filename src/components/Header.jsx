@@ -30,7 +30,7 @@ const Content = styled.p`
 `;
 
 const LanguageBtn = styled.button`
-  background-color: #6e263a;
+  background-color: #c4e012;
   padding: 10px;
   font-size: 20px;
   position: absolute;
