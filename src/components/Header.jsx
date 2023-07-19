@@ -3,7 +3,7 @@ import styled from "styled-components";
 import UserContext from "./Context";
 
 const Container = styled.div`
-  background-color: #6e263a;
+  background-color: #6a6e26;
 `;
 const Wrapper = styled.div`
   display: flex;
