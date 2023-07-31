@@ -15,7 +15,7 @@ export default function App() {
         const url = new URL(window.location.href);
         const searchParams = new URLSearchParams(url.search);
 
-        const apid_id = searchParams.get("apid_id");
+        const apid_id = searchParams.get("id");
         const lang = searchParams.get("lang");
 
         const paramsObject = {
@@ -39,7 +39,7 @@ export default function App() {
         language = { language }
         /> <
         ChatBox queryParams = { queryParams }
-        /> <
-        /div>
+        /> < /
+        div >
     );
 }
