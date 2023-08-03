@@ -30,12 +30,25 @@ export default function App() {
   useEffect(() => {
     fetchQueryParams();
   }, []);
+
   console.log(queryParams);
 
   return (
     <div className="App">
       <Header handleLanguage={handleLanguage} language={language} />
-      <ChatBox queryParams={queryParams} />{" "}
+      {queryParams?.apid_id && queryParams?.lang ? (
+        <ChatBox queryParams={queryParams} />
+      ) : (
+        <h2
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "50px",
+          }}
+        >
+          Something went wrong. Please try after some time.
+        </h2>
+      )}
     </div>
   );
 }
