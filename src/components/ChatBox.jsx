@@ -162,7 +162,6 @@ const ChatBox = ({ queryParams }) => {
         apid_id: apid_id,
         lang: lang,
       };
-      // console.log(intent);
       const url =
         "https://hrmcrm.nablasol.net/custom/service/v4_1_custom/nblchatbot.php";
       const response = await axios.post(
@@ -173,6 +172,7 @@ const ChatBox = ({ queryParams }) => {
       );
 
       const data = response.data;
+      console.log(data);
       const botMessage = { text: data, sender: "Eve" };
       console.log(botMessage);
       setMessages([
@@ -256,6 +256,10 @@ const ChatBox = ({ queryParams }) => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const submitResponse = () => {
+    console.log("Clicked btn");
   };
 
   return (
