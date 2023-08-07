@@ -5,17 +5,17 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import axios from "axios";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
-const Container = styled.div`
+const Container = styled.div `
   width: 65%;
   margin: 50px auto 0 auto;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 `;
-const Wrapper = styled.div``;
-const CardHeader = styled.div`
+const Wrapper = styled.div ``;
+const CardHeader = styled.div `
   background: #b61f56;
 `;
 
-const ProfileBox = styled.div`
+const ProfileBox = styled.div `
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -23,23 +23,23 @@ const ProfileBox = styled.div`
   gap: 15px;
 `;
 
-const AvatarImgBox = styled.div`
+const AvatarImgBox = styled.div `
   height: 60px;
   border: 3px solid #fff;
   border-radius: 50%;
   padding: 8px;
 `;
 
-const Avatar = styled.img`
+const Avatar = styled.img `
   height: 100%;
   width: 100%;
 `;
-const AvatarName = styled.span`
+const AvatarName = styled.span `
   color: #fff;
   font-size: 22px;
 `;
 
-const CardBody = styled.div`
+const CardBody = styled.div `
   height: 250px;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -48,9 +48,9 @@ const CardBody = styled.div`
     display: none;
   }
 `;
-const CardFooter = styled.div``;
+const CardFooter = styled.div ``;
 
-const UserInput = styled.input`
+const UserInput = styled.input `
   width: 100%;
   height: 50px;
   padding: 10px;
@@ -58,7 +58,7 @@ const UserInput = styled.input`
   outline: none;
 `;
 
-const SendButton = styled.button`
+const SendButton = styled.button `
   border-radius: 50%;
   height: 60px;
   width: 60px;
@@ -72,11 +72,11 @@ const SendButton = styled.button`
   }
 `;
 
-const IconBox = styled.div`
+const IconBox = styled.div `
   transform: rotate(90deg);
 `;
 
-const FooterWrapper = styled.div`
+const FooterWrapper = styled.div `
   padding: 0 10px;
   display: flex;
   align-items: center;
@@ -85,17 +85,17 @@ const FooterWrapper = styled.div`
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 `;
 
-const AvatarDesc = styled.span`
+const AvatarDesc = styled.span `
   color: #fff;
   font-weight: 200;
 `;
-const AvatarDescBox = styled.div`
+const AvatarDescBox = styled.div `
   display: flex;
   flex-direction: column;
   gap: 5px;
 `;
 
-const BotTextBox = styled.div`
+const BotTextBox = styled.div `
   display: flex;
   justify-content: ${(props) =>
     props.sender === `user` ? `flex-end` : `flex-start`};
@@ -199,6 +199,10 @@ const ChatBox = ({ queryParams }) => {
   const handleInput = (event) => {
     setInput(event.target.value);
     setIsButtonDisabled(event.target.value === "");
+  };
+
+  const handleClick = () => {
+    console.log('Button clicked!');
   };
 
   const handleSubmit = async (event) => {
