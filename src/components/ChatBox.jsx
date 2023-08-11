@@ -374,17 +374,17 @@ const ChatBox = ({ queryParams }) => {
             );
           })}
           <RestartConversationBox>
-            {messages[messages.length - 1]?.text.output?.includes(
+            {(messages[messages.length - 1]?.text.output?.includes(
               "Thank you for calling today. We hope you have a great day!"
             ) ||
-              (messages[messages.length - 1]?.text.output?.includes(
+              messages[messages.length - 1]?.text.output?.includes(
                 "Gracias"
-              ) && (
-                <RestartConversationButton onClick={handleRestartConversation}>
-                  <RestartAltIcon />
-                  {lang === "en" ? "Restart Conversation" : "restart"}
-                </RestartConversationButton>
-              ))}
+              )) && (
+              <RestartConversationButton onClick={handleRestartConversation}>
+                <RestartAltIcon />
+                {lang === "en" ? "Restart Conversation" : "restart"}
+              </RestartConversationButton>
+            )}
           </RestartConversationBox>
           <ChatbodyRef ref={chatboxRef}></ChatbodyRef>
         </CardBody>
