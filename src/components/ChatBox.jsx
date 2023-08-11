@@ -102,7 +102,7 @@ const BotTextBox = styled.div`
     props.sender === `user` ? `flex-end` : `flex-start`};
   margin: ${(props) =>
     props.sender === `user` ? `25px 25px 0 auto` : `25px auto 0 25px`};
-  width: 70%;
+  width: ${(props) => (props.sender === `user` ? `25%` : `70%`)};
 `;
 
 const BotTextContainer = styled.div`
@@ -143,8 +143,8 @@ const RestartConversationButton = styled.button`
 
 const ResponseBtn = styled.button`
   padding: 18px;
-  background: rgb(3, 71, 103);
-  background: linear-gradient(
+  background: #b61f56;
+  /* background: linear-gradient(
     163deg,
     rgba(3, 71, 103, 1) 0%,
     rgba(0, 152, 215, 1) 100%
@@ -153,7 +153,7 @@ const ResponseBtn = styled.button`
     rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
     rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
     rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -303,7 +303,7 @@ const ChatBox = ({ queryParams }) => {
   const handleButtonResponses = async (button_value, button_text) => {
     console.log(button_value);
     const userMessage = {
-      text: { output: button_text, buttons: {} },
+      text: { output: button_value, buttons: {} },
       sender: "user",
     };
     setMessages([...messages, userMessage]);
