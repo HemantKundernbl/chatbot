@@ -4,6 +4,7 @@ import parse from "html-react-parser";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import axios from "axios";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import DOMPurify from "dompurify";
 
 const Container = styled.div`
   width: 65%;
@@ -92,7 +93,7 @@ const AvatarDesc = styled.span`
 const AvatarDescBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 12px;
 `;
 
 const BotTextBox = styled.div`
@@ -101,18 +102,21 @@ const BotTextBox = styled.div`
     props.sender === `user` ? `flex-end` : `flex-start`};
   margin: ${(props) =>
     props.sender === `user` ? `25px 25px 0 auto` : `25px auto 0 25px`};
-  width: 50%;
+  width: 70%;
 `;
 
+const BotTextContainer = styled.div`
+  width: 100%;
+`;
 const BotText = styled.p`
   padding: 10px;
+  font-weight: 500;
   font-size: 17px;
-  border: ${(props) =>
-    props.sender === `user` ? `2px solid #6E263A` : `2px solid #013853`};
+  /* border: ${(props) =>
+    props.sender === `user` ? `2px solid #6E263A` : `2px solid #013853`}; */
   border-radius: 12px;
   background-color: ${(props) =>
-    props.sender === `user` ? `#6e263a21` : `#01385317`};
-  width: fit-content;
+    props.sender === `user` ? `#6e263a21` : `#0138530f`};
 `;
 
 const Form = styled.form``;
@@ -137,6 +141,37 @@ const RestartConversationButton = styled.button`
   align-items: center;
 `;
 
+const ResponseBtn = styled.button`
+  padding: 18px;
+  background: rgb(3, 71, 103);
+  background: linear-gradient(
+    163deg,
+    rgba(3, 71, 103, 1) 0%,
+    rgba(0, 152, 215, 1) 100%
+  );
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
+    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  &:hover {
+    transform: scale(1.02);
+    transition: 0.1s all ease-in-out;
+  }
+`;
+
+const ResponseBtnContainer = styled.div`
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+`;
+
 const ChatBox = ({ queryParams }) => {
   const { lang, apid_id } = queryParams;
   const initalText =
@@ -146,7 +181,7 @@ const ChatBox = ({ queryParams }) => {
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
-    { text: initalText, sender: "Eve" },
+    { text: { output: initalText, buttons: {} }, sender: "Eve" },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -171,12 +206,14 @@ const ChatBox = ({ queryParams }) => {
         })
       );
 
-      const data = response.data;
-      console.log(data);
+      const data = JSON.parse(response.data);
+
+      // Attach the function to the button's onClick event
+
       const botMessage = { text: data, sender: "Eve" };
       console.log(botMessage);
       setMessages([
-        { text: initalText, sender: "Eve" }, // Add the initalText as the first message
+        { text: { output: initalText, buttons: {} }, sender: "Eve" }, // Add the initalText as the first message
         botMessage,
       ]);
       setIsLoading(false);
@@ -204,7 +241,11 @@ const ChatBox = ({ queryParams }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const userMessage = { text: input, sender: "user" };
+    const userMessage = {
+      text: { output: input, buttons: {} },
+      sender: "user",
+    };
+    console.log(userMessage);
     setMessages([...messages, userMessage]);
     inputRef.current.value = "";
     setInput("");
@@ -220,7 +261,8 @@ const ChatBox = ({ queryParams }) => {
         })
       );
 
-      const data = response.data;
+      const data = JSON.parse(response.data);
+      console.log(data);
       const botMessage = { text: data, sender: "Eve", isLoading: false };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
       setIsLoading(false);
@@ -231,7 +273,7 @@ const ChatBox = ({ queryParams }) => {
   };
 
   const handleRestartConversation = async () => {
-    setMessages([{ text: initalText, sender: "Eve" }]);
+    setMessages([{ text: { output: initalText, buttons: {} }, sender: "Eve" }]);
     setIsLoading(true);
     try {
       const intent = {
@@ -248,7 +290,7 @@ const ChatBox = ({ queryParams }) => {
         })
       );
 
-      const data = response.data;
+      const data = JSON.parse(response.data);
       const botMessage = { text: data, sender: "Eve" };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
       setIsLoading(false);
@@ -258,10 +300,37 @@ const ChatBox = ({ queryParams }) => {
     }
   };
 
-  const submitResponse = () => {
-    console.log("Clicked btn");
+  const handleButtonResponses = async (button_value, button_text) => {
+    console.log(button_value);
+    const userMessage = {
+      text: { output: button_text, buttons: {} },
+      sender: "user",
+    };
+    setMessages([...messages, userMessage]);
+    try {
+      const url =
+        "https://hrmcrm.nablasol.net/custom/service/v4_1_custom/nblchatbot.php";
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          intent: {
+            input: button_value,
+            apid_id,
+            lang,
+          },
+        })
+      );
+
+      const data = JSON.parse(response.data);
+      const botMessage = { text: data, sender: "Eve" };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
+      setIsButtonDisabled(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  console.log(messages);
   return (
     <Container>
       <Wrapper>
@@ -280,24 +349,40 @@ const ChatBox = ({ queryParams }) => {
           {messages?.map((message) => {
             return (
               <BotTextBox sender={message.sender}>
-                {message?.text && (
-                  <BotText sender={message.sender}>
-                    {parse(message.text)}
-                  </BotText>
+                {message?.text.output && (
+                  <BotTextContainer>
+                    <BotText sender={message.sender}>
+                      {parse(message.text.output)}
+                      <ResponseBtnContainer>
+                        {Object.keys(message.text.buttons).map((buttonKey) => {
+                          const button = message?.text?.buttons[buttonKey];
+                          return (
+                            <ResponseBtn
+                              onClick={() =>
+                                handleButtonResponses(button.value, button.text)
+                              }
+                            >
+                              {button?.text}
+                            </ResponseBtn>
+                          );
+                        })}
+                      </ResponseBtnContainer>
+                    </BotText>
+                  </BotTextContainer>
                 )}
               </BotTextBox>
             );
           })}
           <RestartConversationBox>
-            {messages[messages.length - 1]?.text?.includes(
+            {messages[messages.length - 1]?.text.output?.includes(
               "Thank you for calling today. We hope you have a great day!"
             ) ||
-              (messages[messages.length - 1]?.text?.includes(
-                "Gracias por llamar hoy. ¡Esperamos que tengas un gran día!"
+              (messages[messages.length - 1]?.text.output?.includes(
+                "Gracias"
               ) && (
                 <RestartConversationButton onClick={handleRestartConversation}>
                   <RestartAltIcon />
-                  Restart Conversation
+                  {lang === "en" ? "Restart Conversation" : "restart"}
                 </RestartConversationButton>
               ))}
           </RestartConversationBox>
