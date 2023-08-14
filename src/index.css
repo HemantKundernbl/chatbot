@@ -4,17 +4,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.response_button {
-  display: block;
-  width: 90%;
-  color: white;
-  background-color: rgb(182, 31, 86);
-  padding: 8px 10px;
-  font-size: 14px;
-  border: none;
-  outline: none;
-  margin: 6px 0px;
-  cursor: pointer;
-  text-align: left;
-  border-radius: 5px;
+b {
+  font-weight: 500;
 }
