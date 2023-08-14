@@ -394,7 +394,7 @@ const ChatBox = ({ queryParams }) => {
         </CardBody>
         <CardFooter>
           <Form onSubmit={handleSubmit}>
-            <FooterWrapper>
+            {/* <FooterWrapper>
               <UserInput
                 placeholder="Enter your message..."
                 onChange={handleInput}
@@ -408,7 +408,7 @@ const ChatBox = ({ queryParams }) => {
                   <NavigationIcon />
                 </IconBox>
               </SendButton>
-            </FooterWrapper>
+            </FooterWrapper> */}
           </Form>
         </CardFooter>
       </Wrapper>
